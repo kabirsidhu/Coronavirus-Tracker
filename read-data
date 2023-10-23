@@ -1,0 +1,42 @@
+!pip install Biopython
+from Bio import SeqIO
+import numpy as np
+import pandas as pd
+import tqdm
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+from collections import Counter
+from sklearn import model_selection, linear_model
+
+# import gdown
+# data_path = 'https://drive.google.com/uc?id=1f1CtRwSohB7uaAypn8iA4oqdXlD_xXL1'
+# cov2_sequences = 'SARS_CoV_2_sequences_global.fasta'
+# gdown.download(data_path, cov2_sequences, True)
+
+!wget 'https://storage.googleapis.com/inspirit-ai-data-bucket-1/Data/AI%20Scholars/Sessions%206%20-%2010%20(Projects)/Project%20-%20DNA%20Detectives/SARS_CoV_2_sequences_global.fasta'
+cov2_sequences = 'SARS_CoV_2_sequences_global.fasta'
+
+#These global sequences come from the NCBI database
+sequences = [r for r in SeqIO.parse(cov2_sequences, 'fasta')]
+sequence_num =  200#@param {type:"integer"}
+print(sequences[sequence_num])
+
+#Create histogram of the number of mutations each SARS-CoV-2 sequence has compared to the reference genome.
+reference = np.array(sequences[0])
+mutations_per_seq = 10
+sequences_per_seq = 10
+plt.hist(sequences_per_seq)
+plt.hist(mutations_per_seq)
+plt.xlabel('# mutations')
+plt.ylabel('# sequences')
+plt.show()
+
+#Calculate the number of sequences that have an N in them/are missing
+n_sequences_with_N = 0
+
+for i in range(0, len(sequences)):
+  if 'N' in sequences[i]:
+    n_sequences_with_N = n_sequences_with_N + 1
+
+print('%i sequences have at least 1 "N"!' % n_sequences_with_N)
