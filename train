@@ -1,3 +1,6 @@
+from sklearn.metrics import confusion_matrix
+from collections import Counter
+from sklearn import model_selection, linear_model
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 lm = linear_model.LogisticRegression(
@@ -11,17 +14,3 @@ lm.fit(X_train, Y_train)
 y_pred = lm.predict(X_test) 
 accuracy = accuracy_score(Y_test, y_pred)
 print (accuracy)
-
-# Predict on the test set.
-Y_pred = lm.predict(X_test)
-
-# Compute accuracy.
-accuracy = accuracy_score(Y_test, y_pred)
-print("Accuracy: %", accuracy)
-
-# Compute confusion matrix.
-confusion_mat = pd.DataFrame(confusion_matrix(Y_test, Y_pred))
-confusion_mat.columns = [c + ' predicted' for c in lm.classes_]
-confusion_mat.index = [c + ' true' for c in lm.classes_]
-
-print(confusion_mat)
