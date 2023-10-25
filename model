@@ -1,0 +1,41 @@
+_1_  =  'inputs' #@param {type:"string"}
+_2_  =  'labels' #@param {type:"string"}
+
+print('1. We need a set of FEATURES (X).\n',
+      '  Our features will be the genomes of the different sequences.')
+print('2. We need LABElS (Y).\n',
+      '  Our labels will be the country that each sequence came from.')
+
+mutation_df = pd.DataFrame()
+n_bases_in_seq = len(sequences[0])
+
+# Iterate though all positions in this sequence.
+for location in tqdm.tqdm(range(n_bases_in_seq)): # tqdm is a nice library that prints our progress.
+  bases_at_location = np.array([s[location] for s in sequences])
+  # If there are no mutations at this position, move on.
+  if len(set(bases_at_location))==1: continue # If
+  for base in ['A', 'T', 'G', 'C', '-']:
+    feature_values = (bases_at_location==base)
+    
+    # Set the values of any base that equals 'N' to np.nan.
+    feature_values[bases_at_location==['N']] = np.nan
+    
+    # Convert from T/F to 0/1.
+    feature_values  = feature_values*1
+    
+    # Make the column name look like <location>_<base> (1_A, 2_G, 3_A, etc.)
+    column_name = str(location) + '_' + base
+    mutation_df[column_name] = feature_values
+
+# Print the size of the feature matrix/table.
+n_rows = np.shape(mutation_df)[0]
+n_columns = np.shape(mutation_df)[1]
+print("Size of matrix: %i rows x %i columns" %(n_rows, n_columns))
+
+# Check what the matrix looks like:
+mutation_df.tail()
+
+country = "Turkey" #@param dict_keys(['China', 'Kazakhstan', 'India', 'Sri Lanka', 'Taiwan', 'Hong Kong', 'Viet Nam', 'Thailand', 'Nepal', 'Israel', 'South Korea', 'Iran', 'Pakistan', 'Turkey', 'Australia', 'USA']
+countries = [(s.description).split('|')[-1] for s in sequences]
+print("There are %i sequences from %s." %
+      (Counter(countries)[country], country))
