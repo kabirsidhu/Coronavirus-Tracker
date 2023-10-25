@@ -1,3 +1,4 @@
+from sklearn.metrics import confusion_matrix
 
 # Predict on the test set.
 Y_pred = lm.predict(X_test)
