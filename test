@@ -1,3 +1,10 @@
+!pip install Biopython
+from Bio import SeqIO
+import numpy as np
+import pandas as pd
+import tqdm
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.metrics import confusion_matrix
 
 # Predict on the test set.
