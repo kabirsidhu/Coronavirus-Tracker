@@ -1,0 +1,14 @@
+
+# Predict on the test set.
+Y_pred = lm.predict(X_test)
+
+# Compute accuracy.
+accuracy = accuracy_score(Y_test, y_pred)
+print("Accuracy: %", accuracy)
+
+# Compute confusion matrix.
+confusion_mat = pd.DataFrame(confusion_matrix(Y_test, Y_pred))
+confusion_mat.columns = [c + ' predicted' for c in lm.classes_]
+confusion_mat.index = [c + ' true' for c in lm.classes_]
+
+print(confusion_mat)
