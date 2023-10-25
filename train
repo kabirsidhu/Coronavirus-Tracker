@@ -1,0 +1,27 @@
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+lm = linear_model.LogisticRegression(
+    multi_class="multinomial", max_iter=1000,
+    fit_intercept=False, tol=0.001, solver='saga', random_state=42)
+
+# Split into training/testing set. Use a training size of .8
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=101)
+
+lm.fit(X_train, Y_train)
+y_pred = lm.predict(X_test) 
+accuracy = accuracy_score(Y_test, y_pred)
+print (accuracy)
+
+# Predict on the test set.
+Y_pred = lm.predict(X_test)
+
+# Compute accuracy.
+accuracy = accuracy_score(Y_test, y_pred)
+print("Accuracy: %", accuracy)
+
+# Compute confusion matrix.
+confusion_mat = pd.DataFrame(confusion_matrix(Y_test, Y_pred))
+confusion_mat.columns = [c + ' predicted' for c in lm.classes_]
+confusion_mat.index = [c + ' true' for c in lm.classes_]
+
+print(confusion_mat)
