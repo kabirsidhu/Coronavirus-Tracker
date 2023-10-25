@@ -1,3 +1,6 @@
+from sklearn.metrics import confusion_matrix
+from collections import Counter
+from sklearn import model_selection, linear_model
 _1_  =  'inputs' #@param {type:"string"}
 _2_  =  'labels' #@param {type:"string"}
 
@@ -39,3 +42,33 @@ country = "Turkey" #@param dict_keys(['China', 'Kazakhstan', 'India', 'Sri Lanka
 countries = [(s.description).split('|')[-1] for s in sequences]
 print("There are %i sequences from %s." %
       (Counter(countries)[country], country))
+
+balanced_df = mutation_df.copy()
+balanced_df['label'] = regions
+balanced_df = balanced_df[balanced_df.label!='NA']
+balanced_df = balanced_df.drop_duplicates()
+samples_north_america = balanced_df[balanced_df.label== 'North America']
+samples_oceania = balanced_df[balanced_df.label== 'Oceania']
+samples_asia = balanced_df[balanced_df.label== 'Asia']
+
+# Number of samples we will use from each region.
+n = min(len(samples_north_america), len(samples_oceania), len(samples_asia))
+        #### FILL IN ######,
+        ##### FILL IN ####)
+
+balanced_df = pd.concat([samples_north_america[:n],
+                    samples_asia[:n],
+                    samples_oceania[:n]])
+
+X = balanced_df.drop('label', 1)
+Y = balanced_df.label
+data = "X (features)" #@param ['X (features)', 'Y (label)']
+start = 1 #@param {type:'integer'}
+stop =  10#@param {type:'integer'}
+
+if start>=stop:print("Start must be < stop!")
+else:
+  if data=='X (features)':
+    print(X.iloc[start:stop])
+  if data=='Y (label)':
+    print(Y[start:stop])
